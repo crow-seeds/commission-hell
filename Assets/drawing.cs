@@ -131,7 +131,7 @@ public class drawing : MonoBehaviour
         {
             afkTime += Time.deltaTime;
 
-            if (afkTime > 10)
+            if (afkTime > 5)
             {
                 thinking = true;
                 artistFace.texture = Resources.Load<Texture>("Sprites/artist_thinking");
@@ -195,7 +195,7 @@ public class drawing : MonoBehaviour
         {
             holdTime += Time.deltaTime;
 
-            if (holdTime > 2 && !holding)
+            if (holdTime > 1.5f && !holding)
             {
                 artistFace.texture = Resources.Load<Texture>("Sprites/artist_focused");
                 holding = true;
@@ -563,7 +563,7 @@ public class drawing : MonoBehaviour
     HashSet<string> fishList = new HashSet<string> { "fish", "star", "star2" };
     HashSet<string> dogList = new HashSet<string> { "dog_half", "long_dog" };
     HashSet<string> starList = new HashSet<string> { "star", "star2" };
-    HashSet<string> creatureList = new HashSet<string> { "dog_half", "star", "star2", "cig", "alien", "baby_eater", "disowned", "looking_up", "shocked", "sitting", "cool_guy", "happy_emoji", "sad_emoji", "worried_emoji", "sleepy_emoji", "cool_emoji", "smug_emoji" };
+    HashSet<string> creatureList = new HashSet<string> { "dog_half", "star", "star2", "cig", "baby_eater", "disowned", "looking_up", "shocked", "sitting", "cool_guy" };
     HashSet<string> smokerList = new HashSet<string> { "strawberry", "cig" };
     HashSet<string> alienList = new HashSet<string> { "alien", "star", "star2" };
     HashSet<string> animalsList = new HashSet<string> { "fish", "dog_half", "long_dog", "cat" };
@@ -576,6 +576,8 @@ public class drawing : MonoBehaviour
         {
             return;
         }
+
+        //Debug.Log("checking....");
 
         Color32[] colorArray = canvas.GetPixels32();
         Dictionary<string, int> frequency = new Dictionary<string, int>();
@@ -743,7 +745,7 @@ public class drawing : MonoBehaviour
 
         foreach (string s in attributesInPainting)
         {
-            if (s == "apple" && level == 1)
+            if ((s == "apple" || s == "apple2") && level == 1)
             {
                 if (frequency[s] >= canvas.width * canvas.height * .2f)
                 {
@@ -1226,6 +1228,7 @@ public class drawing : MonoBehaviour
         else
         {
             mood -= 2;
+            //StartCoroutine(changeExpression("artist_sad", 3));
             StartCoroutine(changeExpression("artist_game_over", 3));
             statusText.text += "What is this??? (+0)";
             soundFx.PlayOneShot(Resources.Load<AudioClip>("Sounds/wrong"));
@@ -1335,11 +1338,11 @@ public class drawing : MonoBehaviour
 
     void changeToMainFace()
     {
-        if (mood == 0 || mood == 1)
+        if (mood == 0)
         {
             artistFace.texture = Resources.Load<Texture>("Sprites/artist_neutral");
         }
-        else if (mood == 2 || mood == 3)
+        else if (mood == 2 || mood == 3 || mood == 1)
         {
             artistFace.texture = Resources.Load<Texture>("Sprites/artist_happy");
         }
@@ -1353,6 +1356,7 @@ public class drawing : MonoBehaviour
         }
         else
         {
+            //artistFace.texture = Resources.Load<Texture>("Sprites/artist_sad");
             artistFace.texture = Resources.Load<Texture>("Sprites/artist_done_for");
         }
     }
